@@ -7,14 +7,16 @@ import { ASSETS } from 'lib/constants';
 import { ICoingeckoResponseDto } from 'lib/dtos/coingecko-response.dto';
 import { Channels, Events } from 'lib/enums';
 import { ISymbolData } from 'lib/interfaces';
-import { WebsocketGateway } from './websocket.gateway';
 import { simpleConfig } from 'lib/config/config';
+import { WebsocketGateway } from '../transport/websocket.gateway';
+import { MarketRateDtoMapper } from '../mappers/market-rate.mapper';
 
 @Injectable()
 export class MarketRatesService {
   rates: ISymbolData[] = [];
   constructor(
     @Inject(Logger) private readonly logger: Logger,
+    @Inject(MarketRateDtoMapper) private readonly mapper: MarketRateDtoMapper,
     @Inject(WebsocketGateway) private readonly gateway: WebsocketGateway,
   ) {}
   async getMarketRates(): Promise<void> {
@@ -32,29 +34,21 @@ export class MarketRatesService {
       const rates: ISymbolData[] = response.data.map(
         (data: ICoingeckoResponseDto) => {
           foundIds.push(data.symbol.toLowerCase());
-          return {
-            image: data.image,
-            symbol: data.id,
-            spot: data.current_price,
-            bid: data.low_24h,
-            ask: data.high_24h,
-            change: data.price_change_percentage_24h,
-            timestamp: Date.now(),
-          };
+          return this.mapper.fromPersistence(data);
         },
       );
-      // NOTE: this mixin is provided to ensure the requirement spec is satisfied
+      // NOTE: this mixin is to ensure the requirement spec is satisfied for the list of assets supported.
       mixinSymbols.map((symbol: string) => {
         if (!foundIds.includes(symbol.toLowerCase())) {
-          rates.push({
-            image: '',
+          rates.push(this.mapper.fromPersistence({
+            id: symbol,
             symbol: symbol,
-            spot: Math.random() * 1000,
-            bid: Math.random() * 1000,
-            ask: Math.random() * 1000,
-            change: Math.random() * 100,
-            timestamp: Date.now(),
-          });
+            image: '',
+            current_price: Math.random() * 1000,
+            high_24h: Math.random() * 1000,
+            low_24h: Math.random() * 1000,
+            price_change_percentage_24h: Math.random() * 100,
+          }));
         }
       });
       this.gateway.emit(Channels.RATES, Events.DATA, rates);
