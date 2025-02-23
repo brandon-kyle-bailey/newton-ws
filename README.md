@@ -1,5 +1,8 @@
 # Websocket demo
 
+## Screenshot
+![Screenshot from 2025-02-23 02-15-09](https://github.com/user-attachments/assets/40c5ac8e-f9a6-4dd1-9924-0adf71502e60)
+
 ## What's inside?
 
 This Turborepo includes the following apps:
