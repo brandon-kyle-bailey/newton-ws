@@ -1,4 +1,4 @@
-# Newton websocket demo
+# Websocket demo
 
 ## What's inside?
 
