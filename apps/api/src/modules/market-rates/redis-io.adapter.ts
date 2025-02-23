@@ -1,4 +1,6 @@
-
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import { ServerOptions } from 'socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
@@ -10,7 +12,9 @@ export class RedisIoAdapter extends IoAdapter {
   private pubClient: RedisClientType | undefined;
   private subClient: RedisClientType | undefined;
   async connectToRedis(): Promise<void> {
-    this.pubClient = createClient({ url: `redis://${simpleConfig.redis.host}:${simpleConfig.redis.port}` });
+    this.pubClient = createClient({
+      url: `redis://${simpleConfig.redis.host}:${simpleConfig.redis.port}`,
+    });
     this.subClient = this.pubClient.duplicate();
 
     await Promise.all([this.pubClient.connect(), this.subClient.connect()]);
@@ -18,9 +22,12 @@ export class RedisIoAdapter extends IoAdapter {
     this.adapterConstructor = createAdapter(this.pubClient, this.subClient);
   }
   async disconnectRedis(): Promise<void> {
-    await Promise.all([this.pubClient?.disconnect(), this.subClient?.disconnect()]);
+    await Promise.all([
+      this.pubClient?.disconnect(),
+      this.subClient?.disconnect(),
+    ]);
   }
-  
+
   createIOServer(port: number, options?: ServerOptions): any {
     const server = super.createIOServer(port, options);
     server.adapter(this.adapterConstructor);

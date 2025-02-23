@@ -32,41 +32,49 @@ export default function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {state.rates.map((rate, idx) => (
-                <TableRow
-                  key={rate.symbol}
-                >
+              {state.rates.map((rate) => (
+                <TableRow key={rate.symbol}>
                   <TableCell className="font-bold flex gap-2 justify-start items-center p-2">
                     {rate.image && (
                       <Image
-                      src={rate.image}
-                      width={24}
-                      height={24}
-                      alt={rate.symbol}
+                        src={rate.image}
+                        width={24}
+                        height={24}
+                        alt={rate.symbol}
                       />
                     )}
                     <span className="font-bold w-full p-2">{rate.symbol}</span>
                   </TableCell>
                   <TableCell
-                    className={cn("p-2",
+                    className={cn(
+                      "p-2",
                       rate.change > 0 ? "text-green-500" : "text-red-500",
                     )}
                   >
                     <span>
-                    {rate.change > 0 ? "+" : ""}
-                    {rate.change.toFixed(2)}%
+                      {rate.change > 0 ? "+" : ""}
+                      {rate.change.toFixed(2)}%
                     </span>
                   </TableCell>
-                  <TableCell className="p-2"><span>${rate.spot.toFixed(2)}</span></TableCell>
-                  <TableCell className="p-2"><span>${rate.ask.toFixed(2)}</span></TableCell>
-                  <TableCell className="p-2"><span>${rate.bid.toFixed(2)}</span></TableCell>
+                  <TableCell className="p-2">
+                    <span>${rate.spot.toFixed(2)}</span>
+                  </TableCell>
+                  <TableCell className="p-2">
+                    <span>${rate.ask.toFixed(2)}</span>
+                  </TableCell>
+                  <TableCell className="p-2">
+                    <span>${rate.bid.toFixed(2)}</span>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
           {state.rates.length === 0 && (
             <div className="flex flex-col gap-2">
-              <p className="animate-pulse">Data can take up to 13 seconds to load. This is due to rate limiting by coingeckos api.</p>
+              <p className="animate-pulse">
+                Data can take up to 13 seconds to load. This is due to rate
+                limiting by coingeckos api.
+              </p>
               <Skeleton className="h-4 w-20" />
               <Skeleton className="h-4 w-52" />
               <Skeleton className="h-4 w-32" />

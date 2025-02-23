@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Inject, Logger } from '@nestjs/common';
 import {
   SubscribeMessage,
@@ -9,9 +8,7 @@ import { simpleConfig } from 'lib/config/config';
 import { SubscribeActionDto } from 'lib/dtos';
 import { UnsubscribeActionDto } from 'lib/dtos/unsubscribe-action.dto';
 import { Events } from 'lib/enums';
-import { createClient } from 'redis';
 import { Server, Socket } from 'socket.io';
-
 
 @WebSocketGateway({
   namespace: simpleConfig.ws.namespace,
@@ -19,9 +16,7 @@ import { Server, Socket } from 'socket.io';
   cors: simpleConfig.ws.cors,
 })
 export class WebsocketGateway {
-  constructor(@Inject(Logger) private readonly logger: Logger) {
-
-  }
+  constructor(@Inject(Logger) private readonly logger: Logger) {}
 
   @WebSocketServer()
   server: Server | undefined;
@@ -51,7 +46,7 @@ export class WebsocketGateway {
     if (!client.rooms.has(data.channel)) {
       this.logger.log('User not subscribed to channel');
       return;
-  }
-  await client.leave(data.channel);
+    }
+    await client.leave(data.channel);
   }
 }

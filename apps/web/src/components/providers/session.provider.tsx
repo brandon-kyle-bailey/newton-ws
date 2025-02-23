@@ -4,7 +4,7 @@ import { createContext, Dispatch, useEffect, useReducer } from "react";
 import { io } from "socket.io-client";
 
 export interface Asset {
-  image: any;
+  image: string;
   symbol: string;
   timestamp: number;
   bid: number;
@@ -78,7 +78,7 @@ export function SessionContextProvider({
     });
     socketInstance.on("connect", () => console.log("Connected to Socket.io"));
     socketInstance.emit("subscribe", { channel: "rates" });
-    socketInstance.on("data", (data: any) => {
+    socketInstance.on("data", (data: Asset[]) => {
       dispatch({ type: SessionReducerActions.RATES_CHANGE, payload: data });
     });
     socketInstance.on("disconnect", () =>
