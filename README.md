@@ -9,7 +9,7 @@ This Turborepo includes the following apps:
 
 ### Apps
 
-- `api`: a [Nest.js](https://nestjs.com/) app that servers as the backend websocket api
+- `api`: a [Nest.js](https://nestjs.com/) app that serves as the backend websocket api
 - `web`: a [Next.js](https://nextjs.org/) app that serves as a client for the websocket
 
 ### Installation and setup
