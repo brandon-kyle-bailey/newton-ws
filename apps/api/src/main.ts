@@ -2,7 +2,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { simpleConfig } from 'lib/config/config';
-import { MarketRatesService } from './modules/market-rates/market-rates.service';
+import { MarketRatesService } from './modules/market-rates/services/market-rates.service';
 // import { RedisIoAdapter } from './modules/market-rates/redis-io.adapter';
 
 async function bootstrap() {
